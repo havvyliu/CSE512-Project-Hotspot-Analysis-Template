@@ -30,8 +30,10 @@ object HotzoneAnalysis {
     joinDf.createOrReplaceTempView("joinResult")
 
     // YOU NEED TO CHANGE THIS PART
+    var joinGroupDf = spark.sql("select rectangle, count(point) from joinResult group by rectangle order by rectangle")
+    joinGroupDf.show()
 
-    return joinDf // YOU NEED TO CHANGE THIS PART
+    return joinGroupDf
   }
 
 }

@@ -47,5 +47,30 @@ object HotcellUtils {
     return calendar.get(Calendar.DAY_OF_MONTH)
   }
 
-  // YOU NEED TO CHANGE THIS PART
+
+  // Calculate out sumWX
+  def calculatesumWX(features: scala.collection.mutable.Map[(String, String, String), Double], x: Int, y:Int, t:Int): Double = {
+    var xx: Integer = 0
+    var yy: Integer= 0
+    var tt: Integer = 0
+    var result: Double = 0
+    for (xx <- x-1 to x+1; yy <- y-1 to y+1; tt <- t-1 to t+1) {
+      // Return the count value or 0 which means that no count or cell doesnt exist
+      val Xj:Double = features.getOrElse((xx.toString, yy.toString, tt.toString), 0.0)
+      result += Xj
+    }
+    return result
+  }
+
+  // To calculate out the z-value
+  def calculateZvalue (sumWX: Double, sumXSquare: Double, sumX: Double, n: Double) : Double =
+  {
+    // TODO change averageX to a constant? To avoid calculate it every time
+    val averageX = sumX/n
+    val S = math.sqrt(sumXSquare/n - averageX * averageX)
+    val lower = S*math.sqrt((n*27 -27*27)/(n-1))
+    val upper = sumWX - averageX*27
+    return upper/lower
+  }
+
 }
